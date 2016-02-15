@@ -1,7 +1,7 @@
-from flask import Flask, render_template
+from flask import Flask
 from flask.ext.bootstrap import Bootstrap
-from config import config  # this is the config.py file in the app directory
 
+from config import config  # this is the config.py file in the app directory
 
 bootstrap = Bootstrap()
 
