@@ -4,8 +4,10 @@
 
 {% block head %}
 {{ super() }}
-<link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
-<link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
+<link
+    href="http://cdn.pydata.org/bokeh/release/bokeh-0.11.1.min.css"
+    rel="stylesheet" type="text/css">
+    <script src="http://cdn.pydata.org/bokeh/release/bokeh-0.11.1.min.js"></script>
 {% endblock %}
 
 {% block navbar %}
@@ -24,6 +26,7 @@
             <ul class="nav navbar-nav">
                 <li><a href="/">Home</a></li>
                 <li><a href="{{ url_for('main.upload') }}">Upload</a></li>
+                <li><a href="{{ url_for('main.plot') }}">Plot</a></li>
             </ul>
         </div>
     </div>
