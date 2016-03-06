@@ -88,6 +88,8 @@ var condi = true;
 var count = 0;
 var xselect = [];
 var yselect = [];
+var normValx = 0;
+var normValy = 0;
 
 
 // Functions
@@ -183,16 +185,22 @@ for (var ii = 0; ii < inds.length; ii++) {
 
 data_inds = dataAndIndsSort(xselect, yselect, inds);
 
+normValx = data_inds[0][0];
+normValy = data_inds[1][0];
+
+for (var ii = 0; ii < inds.length; ii++) {
+    data_inds[0][ii] = data_inds[0][ii] - normValx;
+    data_inds[1][ii] = data_inds[1][ii] - normValy;
+}
+
 console.log(data_inds)
-console.log(ymin)
-console.log(ymax)
 condi = true;
 count = inds.length - 1;
 while (condi && (count >= 0)) {
-    if (y_tau + ymin[0] > data_inds[1][count]) {
+    if (y_tau > data_inds[1][count]) {
         tauFit = (((data_inds[0][count] - data_inds[0][count+1])/(data_inds[1][count] - data_inds[1][count+1]))
             *(y_tau - data_inds[1][count])) + data_inds[0][count];
-        console.log(data_inds[1][count], y_tau, data_inds[1][count+1]);
+        console.log(data_inds[1][count], y_tau, data_inds[1][count-1]);
         condi = false;
     }
     count -= 1;
@@ -205,8 +213,8 @@ for (var ii = 0; ii <= nValues; ii++) {
 arrFit_y = firstOrderResponse(arrFit_x, tauFit, KFit);
 
 for (var ii = 0; ii < arrFit_x.length; ii++) {
-    arrFit_x[ii] = arrFit_x[ii] + d['x'][inds[0]];
-    arrFit_y[ii] = arrFit_y[ii] + d['y'][inds[0]];
+    arrFit_x[ii] = arrFit_x[ii] + normValx;
+    arrFit_y[ii] = arrFit_y[ii] + normValy;
 }
 
 sourceFit.get('data')['xfit'] = arrFit_x;
