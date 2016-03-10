@@ -13,6 +13,7 @@ from bokeh.plotting import figure
 from bokeh.embed import components
 from bokeh.models import CustomJS, ColumnDataSource
 from bokeh.models.tools import BoxSelectTool, PanTool, ResetTool, WheelZoomTool, BoxZoomTool
+from bokeh.models.glyphs import Text
 
 
 @main.route('/', methods=['GET'])
@@ -60,18 +61,22 @@ def plot():
 
     sourceData = ColumnDataSource(data=dict(x=xdata, y=ydata, color=colour))
 
-   # DEVELOPMENT NOTE: The lasso_select tool allows for 'live' callback execution, but not box select?
+
     my_plot = figure(tools=[BoxSelectTool(select_every_mousemove=True), PanTool(), ResetTool(), WheelZoomTool(), BoxZoomTool()], title='Time series data',
                      x_range=(xdata.min(), xdata.max()), y_range=(ydata.min(), ydata.max()))      # Create figure object
     my_plot.circle(x='x', y='y', source=sourceData,
                    size=8, alpha=0.5)  # Add circle elements (glyphs) to the figure
 
-    my_plot
 
     sourceFit = ColumnDataSource(data=dict(xfit=[], yfit=[]))
     my_plot.circle(x='xfit', y='yfit', source=sourceFit, color='orange', alpha=0.6)
 
-    sourceData.callback = CustomJS(args=dict(sourceFit=sourceFit), code=("""FirstOrderEyeball(cb_obj, sourceFit)"""))
+
+    sourceAnnotate = ColumnDataSource(data=dict(text=[], xcoor=[], ycoor=[], x_offset=[], y_offset=[]))
+    myText = Text(text='text', x='xcoor', y='ycoor', x_offset='x_offset', y_offset='y_offset')
+    my_plot.add_glyph(sourceAnnotate, myText)
+
+    sourceData.callback = CustomJS(args=dict(sourceFit=sourceFit, sourceAnnotate=sourceAnnotate), code=("""FirstOrderEyeball(cb_obj, sourceFit, sourceAnnotate)"""))
 
 
     script, div = components(my_plot)  # Break figure up into component HTML to be added to template

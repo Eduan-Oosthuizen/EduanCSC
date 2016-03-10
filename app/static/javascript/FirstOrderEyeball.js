@@ -1,7 +1,7 @@
 /**
  * Created by EduanOosthuizen on 21/02/2016.
  */
-function FirstOrderEyeball(cb_obj, sourceFit) { //CallBack object passed
+function FirstOrderEyeball(cb_obj, sourceFit, sourceAnnotate) { //CallBack object passed
 // Variables
     var inds = cb_obj.get('selected')['1d'].indices;
     var d = cb_obj.get('data');
@@ -24,6 +24,7 @@ function FirstOrderEyeball(cb_obj, sourceFit) { //CallBack object passed
     var yselect = [];
     var normValx = 0;
     var normValy = 0;
+    var stringPush = [];
 
 
 // Functions
@@ -136,7 +137,6 @@ function FirstOrderEyeball(cb_obj, sourceFit) { //CallBack object passed
         if (y_tau > data_inds[1][count]) {
             tauFit = (((data_inds[0][count] - data_inds[0][count + 1]) / (data_inds[1][count] - data_inds[1][count + 1]))
                 * (y_tau - data_inds[1][count])) + data_inds[0][count];
-            console.log(data_inds[1][count], y_tau, data_inds[1][count - 1]);
             condi = false;
         }
         count -= 1;
@@ -155,6 +155,19 @@ function FirstOrderEyeball(cb_obj, sourceFit) { //CallBack object passed
 
     sourceFit.get('data')['xfit'] = arrFit_x;
     sourceFit.get('data')['yfit'] = arrFit_y;
+
+    stringPush = []
+    stringPush.push('Gain= ' + KFit.toString());
+    stringPush.push('Time constant= ' + tauFit.toString());
+    sourceAnnotate.get('data')['text'] = stringPush;
+
+    sourceAnnotate.get('data')['y_offset'] = [5, 10];
+    sourceAnnotate.get('data')['x_offset'] = [5, 5];
+
+    count = arrFit_x.length - 1;
+    sourceAnnotate.get('data')['x'] = [arrFit_x[count], arrFit_x[count]];
+    sourceAnnotate.get('data')['y'] = [arrFit_y[count], arrFit_y[count]];
+    console.log(stringPush);
 
     cb_obj.trigger('change');
     sourceFit.trigger('change');
