@@ -4,10 +4,12 @@
 
 {% block head %}
 {{ super() }}
+
 <link
     href="http://cdn.pydata.org/bokeh/release/bokeh-0.10.0.min.css"
     rel="stylesheet" type="text/css">
     <script src="http://cdn.pydata.org/bokeh/release/bokeh-0.10.0.min.js"></script>
+    <script type="text/javascript" src="{{ url_for('main.static', filename='javascript/FirstOrderEyeball.js') }}"></script>
 {% endblock %}
 
 {% block navbar %}
