@@ -161,12 +161,10 @@ function FirstOrderEyeball(cb_obj, sourceFit, sourceAnnotate) { //CallBack objec
     stringPush.push('Time constant= ' + tauFit.toString());
     sourceAnnotate.get('data')['text'] = stringPush;
 
-    sourceAnnotate.get('data')['y_offset'] = [5, 10];
-    sourceAnnotate.get('data')['x_offset'] = [5, 5];
 
-    count = arrFit_x.length - 1;
-    sourceAnnotate.get('data')['x'] = [arrFit_x[count], arrFit_x[count]];
-    sourceAnnotate.get('data')['y'] = [arrFit_y[count], arrFit_y[count]];
+
+    sourceAnnotate.get('data')['x'] = [arrFit_x[0], arrFit_x[0]];
+    sourceAnnotate.get('data')['y'] = [arrFit_y[0], arrFit_y[0]];
     console.log(stringPush);
 
     cb_obj.trigger('change');

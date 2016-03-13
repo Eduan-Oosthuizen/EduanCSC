@@ -62,8 +62,8 @@ def plot():
     sourceData = ColumnDataSource(data=dict(x=xdata, y=ydata, color=colour))
 
 
-    my_plot = figure(tools=[BoxSelectTool(select_every_mousemove=True), PanTool(), ResetTool(), WheelZoomTool(), BoxZoomTool()], title='Time series data',
-                     x_range=(xdata.min(), xdata.max()), y_range=(ydata.min(), ydata.max()))      # Create figure object
+    my_plot = figure(tools=[BoxSelectTool(select_every_mousemove=False), PanTool(), ResetTool(), WheelZoomTool(), BoxZoomTool()], title='Time series data',
+                     x_range=(xdata.min(), xdata.max()), y_range=(ydata.min(), ydata.max()))      # Create figure object; DEBUG: select_every_mousemove=False
     my_plot.circle(x='x', y='y', source=sourceData,
                    size=8, alpha=0.5)  # Add circle elements (glyphs) to the figure
 
@@ -72,9 +72,9 @@ def plot():
     my_plot.circle(x='xfit', y='yfit', source=sourceFit, color='orange', alpha=0.6)
 
 
-    sourceAnnotate = ColumnDataSource(data=dict(text=[], xcoor=[], ycoor=[], x_offset=[], y_offset=[]))
-    myText = Text(text='text', x='xcoor', y='ycoor', x_offset='x_offset', y_offset='y_offset')
-    my_plot.add_glyph(sourceAnnotate, myText)
+    sourceAnnotate = ColumnDataSource(data=dict(text=['Foo', 'Bah'], x=[50, 50], y=[0.5, 0], x_offset=[0,0], y_offset=[0,0], text_font_size=['15pt', '15pt'],
+                                                text_color=['orange', 'orange']))
+    my_plot.text(source=sourceAnnotate, text='text', x='x', y='y', x_offset='x_offset', y_offset='y_offset', text_font_size='text_font_size', text_color='text_color')
 
     sourceData.callback = CustomJS(args=dict(sourceFit=sourceFit, sourceAnnotate=sourceAnnotate), code=("""FirstOrderEyeball(cb_obj, sourceFit, sourceAnnotate)"""))
 
