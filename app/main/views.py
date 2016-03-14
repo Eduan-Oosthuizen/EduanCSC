@@ -62,7 +62,7 @@ def plot():
     sourceData = ColumnDataSource(data=dict(x=xdata, y=ydata, color=colour))
 
 
-    my_plot = figure(tools=[BoxSelectTool(select_every_mousemove=False), PanTool(), ResetTool(), WheelZoomTool(), BoxZoomTool()], title='Time series data',
+    my_plot = figure(tools=[BoxSelectTool(select_every_mousemove=True), PanTool(), ResetTool(), WheelZoomTool(), BoxZoomTool()], title='Time series data',
                      x_range=(xdata.min(), xdata.max()), y_range=(ydata.min(), ydata.max()))      # Create figure object; DEBUG: select_every_mousemove=False
     my_plot.circle(x='x', y='y', source=sourceData,
                    size=8, alpha=0.5)  # Add circle elements (glyphs) to the figure
