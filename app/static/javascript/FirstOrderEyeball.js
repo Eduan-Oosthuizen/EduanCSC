@@ -1,7 +1,7 @@
 /**
  * Created by EduanOosthuizen on 21/02/2016.
  */
-function FirstOrderEyeball(cb_obj, sourceFit, sourceAnnotate) { //CallBack object passed
+function FirstOrderEyeball(cb_obj, sourceFit /*, sourceAnnotate */) { //CallBack object passed
 // Variables
     var inds = cb_obj.get('selected')['1d'].indices;
     var d = cb_obj.get('data');
@@ -156,16 +156,16 @@ function FirstOrderEyeball(cb_obj, sourceFit, sourceAnnotate) { //CallBack objec
     sourceFit.get('data')['xfit'] = arrFit_x;
     sourceFit.get('data')['yfit'] = arrFit_y;
 
-    stringPush = []
-    stringPush.push('Gain= ' + KFit.toString());
-    stringPush.push('Time constant= ' + tauFit.toString());
-    sourceAnnotate.get('data')['text'] = stringPush;
+    // stringPush = []
+    // stringPush.push('Gain= ' + KFit.toString());
+    // stringPush.push('Time constant= ' + tauFit.toString());
+    // sourceAnnotate.get('data')['text'] = stringPush;
 
 
 
-    sourceAnnotate.get('data')['x'] = [arrFit_x[0], arrFit_x[0]];
-    sourceAnnotate.get('data')['y'] = [arrFit_y[0], arrFit_y[0]];
-    console.log(stringPush);
+    // sourceAnnotate.get('data')['x'] = [arrFit_x[0], arrFit_x[0]];
+    // sourceAnnotate.get('data')['y'] = [arrFit_y[0], arrFit_y[0]];
+    // console.log(stringPush);
 
     cb_obj.trigger('change');
     sourceFit.trigger('change');
