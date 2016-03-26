@@ -11,7 +11,7 @@ from numpy import linspace, exp, sin
 from pandas import DataFrame
 from bokeh.plotting import figure
 from bokeh.embed import components
-from bokeh.models import CustomJS, ColumnDataSource
+from bokeh.models import CustomJS, ColumnDataSource, Range1d, LinearAxis
 from bokeh.models.tools import BoxSelectTool, PanTool, ResetTool, WheelZoomTool, BoxZoomTool
 
 
@@ -45,7 +45,7 @@ def plot():
 
     xdata1 = data1.values[:,1]    # Extract Data
     ydata1 = data1.values[:,2]
-    colour1 = ['navy']*len(xdata1)
+    colour1 = ['black']*len(xdata1)
 
     # Read data as if uploaded file is now used, Data set 2
     data2 = read_csv('app/static/uploads/Data2.csv', sep=',', skipinitialspace=1)
@@ -77,19 +77,33 @@ def plot():
     sourceData3 = ColumnDataSource(data=dict(x=xdata3, y=ydata3, color=colour3))
 
     my_plot = figure(tools=[BoxSelectTool(dimensions=['width'], select_every_mousemove=True), PanTool(), ResetTool(), WheelZoomTool(), BoxZoomTool()],
-                     title='Time series data')      # Create figure object; DEBUG: select_every_mousemove=False
+                     title='Time series data',
+                     x_range=(xdata1.min(), xdata1.max()),
+                     y_range=(ydata1.min(), ydata1.max()),
+                     width=1200)      # Create figure object; DEBUG: select_every_mousemove=False
+
+    my_plot.extra_y_ranges = {# 'Data1': Range1d(start=ydata1.min(), end=ydata1.max()),
+                              'Data2': Range1d(start=ydata2.min(), end=ydata2.max()),
+                              'Data3': Range1d(start=ydata3.min(), end=ydata3.max())}
+
     my_plot.circle(x='x', y='y', color='color', source=sourceData1,
-                   size=8, alpha=0.5)  # Add circle elements (glyphs) to the figure
+                   size=8, alpha=0.8, legend='Data 1')  # Add circle elements (glyphs) to the figure
+
     my_plot.circle(x='x', y='y', color='color', source=sourceData2,
-                   size=8, alpha=0.5)
+                   size=5, alpha=0.8, y_range_name='Data2', legend='Data 2')
+
     my_plot.circle(x='x', y='y', color='color', source=sourceData3,
-                   size=8, alpha=0.5)
+                   size=8, alpha=0.5, y_range_name='Data3', legend='Data 3')
     my_plot.line(x='x', y='y', color='red', source= sourceData3,
-                 alpha=0.5)
+                 alpha=0.5, y_range_name='Data3', legend='Data 3')
 
 
     sourceFit = ColumnDataSource(data=dict(xfit=[], yfit=[]))
     my_plot.circle(x='xfit', y='yfit', source=sourceFit, color='orange', alpha=0.3)
+
+    # my_plot.add_layout(LinearAxis(y_range_name='Data1', axis_line_color=colour1[0]), 'left')
+    my_plot.add_layout(LinearAxis(y_range_name='Data2', axis_line_color=colour2[0], axis_line_width=3), 'left')
+    my_plot.add_layout(LinearAxis(y_range_name='Data3', axis_line_color=colour3[0], axis_line_width=3), 'left')
 
 
     # sourceAnnotate = ColumnDataSource(data=dict(text=['Foo', 'Bah'], x=[50, 50], y=[0.5, 0], x_offset=[0,0], y_offset=[0,0], text_font_size=['15pt', '15pt'],
