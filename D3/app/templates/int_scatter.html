@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block title %}Evert{% endblock %}
+{% block head %}
+    {{ super() }}
+    <script type="text/javascript" src="{{ url_for('main.static', filename='javascript/chartGen_line.js') }}"></script>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('main.static', filename='css/charts.css') }}"
+{% endblock %}
+{% block body %}
+    {{ super() }}
+    <script>
+        chartGen_line(d3.csv.parse( "{{ url_for('main.static', filename='uploads/Data1.csv') }}"))
+    </script>
+{% endblock %}
