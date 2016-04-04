@@ -10,6 +10,6 @@
 {% block body %}
     {{ super() }}
     <script>
-        chartGen_line(d3.csv.parse( "{{ url_for('main.static', filename='uploads/Data1.csv') }}"))
+        d3.csv( "{{ url_for('main.static', filename='uploads/Data1.csv') }}", chartGen_line)
     </script>
 {% endblock %}
